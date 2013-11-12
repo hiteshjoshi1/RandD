@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ContactSEIService" targetNamespace="http://hitesh.net/webservice/service" xmlns:ns1="http://hitesh.net/webservice/types" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://hitesh.net/webservice/service" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://hitesh.net/webservice/service" xmlns:tns="http://hitesh.net/webservice/types" targetNamespace="http://hitesh.net/webservice/types" version="1.0">
+<xs:import namespace="http://hitesh.net/webservice/service"/>
+<xs:element name="getContactByIdResponse" type="tns:getContactByIdResponse"/>
+<xs:element name="getContactByNameResponse" type="tns:getContactByNameResponse"/>
+<xs:complexType name="getContactByIdResponse">
+    <xs:sequence>
+      <xs:element form="qualified" minOccurs="0" name="contactListResponse" type="ns1:contactServiceResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getContactByNameResponse">
+    <xs:sequence>
+      <xs:element form="qualified" maxOccurs="unbounded" minOccurs="0" name="contactListResponse" type="ns1:contactServiceResponse"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://hitesh.net/webservice/service" elementFormDefault="unqualified" targetNamespace="http://hitesh.net/webservice/service" version="1.0">
+<xs:element name="contactServiceResponse" type="tns:contactServiceResponse"/>
+<xs:element name="getContactById" type="tns:getContactById"/>
+<xs:element name="getContactByName" type="tns:getContactByName"/>
+<xs:complexType name="getContactById">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ContactId" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="contactServiceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="email" type="xs:string"/>
+      <xs:element minOccurs="0" name="firstname" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastname" type="xs:string"/>
+      <xs:element minOccurs="0" name="telephone" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getContactByName">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ContactName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getContactById">
+    <wsdl:part name="parameters" element="tns:getContactById">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContactByIdResponse">
+    <wsdl:part name="parameters" element="ns1:getContactByIdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContactByNameResponse">
+    <wsdl:part name="parameters" element="ns1:getContactByNameResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getContactByName">
+    <wsdl:part name="parameters" element="tns:getContactByName">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="contatctService">
+    <wsdl:operation name="getContactById">
+      <wsdl:input name="getContactById" message="tns:getContactById">
+    </wsdl:input>
+      <wsdl:output name="getContactByIdResponse" message="tns:getContactByIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContactByName">
+      <wsdl:input name="getContactByName" message="tns:getContactByName">
+    </wsdl:input>
+      <wsdl:output name="getContactByNameResponse" message="tns:getContactByNameResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ContactSEIServiceSoapBinding" type="tns:contatctService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getContactById">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getContactById">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getContactByIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContactByName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getContactByName">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getContactByNameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ContactSEIService">
+    <wsdl:port name="contatctServicePort" binding="tns:ContactSEIServiceSoapBinding">
+      <soap:address location="http://localhost:9090/contatctServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

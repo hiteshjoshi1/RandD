@@ -1,0 +1,1 @@
+insert into Contacts(FIRSTNAME,LASTNAME,EMAIL,TELEPHONE) values('Hitesh', 'Joshi','achiever.hitesh@gmail.com','9550660020');
