@@ -17,7 +17,7 @@
   </xs:complexType>
 </xs:schema>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://hitesh.net/webservice/service" elementFormDefault="unqualified" targetNamespace="http://hitesh.net/webservice/service" version="1.0">
-<xs:element name="contactServiceResponse" type="tns:contactServiceResponse"/>
+<xs:element name="Contact" type="tns:contactServiceResponse"/>
 <xs:element name="getContactById" type="tns:getContactById"/>
 <xs:element name="getContactByName" type="tns:getContactByName"/>
 <xs:complexType name="getContactById">

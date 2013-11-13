@@ -2,7 +2,7 @@ package net.hitesh.webservice.data.out;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="Contact")
 public class ContactServiceResponse {
 	
 	private String firstname;
