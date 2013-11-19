@@ -22,6 +22,7 @@ public interface ContactSEI {
 	@ResponseWrapper(targetNamespace="http://hitesh.net/webservice/types", className=" net.hitesh.webservice.data.out.ContactServiceResponse")
 	public @WebResult (name = "contactListResponse", targetNamespace = "http://hitesh.net/webservice/types") ContactServiceResponse getContactThruId(@WebParam(name="ContactId") Integer id);
 	
+	
 	@WebMethod(operationName="getContactByName") 
 	@ResponseWrapper(targetNamespace="http://hitesh.net/webservice/types", className=" net.hitesh.webservice.data.out.ContactServiceResponse")
 	public @WebResult (name = "contactListResponse", targetNamespace = "http://hitesh.net/webservice/types")  List<ContactServiceResponse>   getContactThruName(@WebParam(name="ContactName") String name);

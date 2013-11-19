@@ -26,7 +26,7 @@ public class ResponseMarshaller {
 				ContactServiceResponse response= new ContactServiceResponse();
 				response.setFirstname(contact.getFirstname());
 				response.setLastname(contact.getLastname());
-				response.setEmail(response.getEmail());
+				response.setEmail(contact.getEmail());
 				response.setTelephone(contact.getTelephone());
 				responseList.add(response);			 
 		 }

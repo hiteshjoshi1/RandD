@@ -19,9 +19,9 @@ public interface ContactRestSEI {
 	@Path("/contact/{contactid}")
 	public ContactServiceResponse getContact(@PathParam ("contactid") int id);
 	
-	 @POST
+	 @GET
 	 @Produces(MediaType.APPLICATION_JSON)
-	 @Path("/contact/{fname}")
+	 @Path("/contactName/{fname}")
 	public List<ContactServiceResponse> getContactListByName(@PathParam("fname")String name);
 
 }

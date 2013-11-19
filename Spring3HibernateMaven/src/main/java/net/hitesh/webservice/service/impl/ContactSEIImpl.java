@@ -12,6 +12,7 @@ import net.hitesh.webservice.processor.ContactProcessor;
 import net.hitesh.webservice.service.ContactSEI;
 
 
+
 @Transactional
 @WebService(endpointInterface="net.hitesh.webservice.service.ContactSEI",
 targetNamespace="http://hitesh.net/webservice/service",
