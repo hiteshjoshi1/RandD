@@ -51,13 +51,19 @@
 		<web-resource-name>wsContact</web-resource-name>
 	   <url-pattern>/services/*</url-pattern>
 	   <http-method>POST</http-method>
+	   <http-method>GET</http-method>
 		</web-resource-collection>
 	 	<auth-constraint>
 			<role-name>webservice</role-name>
 		</auth-constraint> 
 		<user-data-constraint>
-          	<transport-guarantee>NONE</transport-guarantee>
-      	</user-data-constraint>
+	  <!-- The Transport Guarantee Enables SSL on your service, we need to add the certificates to server key stores -->
+      <!--  If SSL is not used than use Transport Gurantee  is NONE
+         	<transport-guarantee>NONE</transport-guarantee> 
+         	mypass is my keypass and storepass
+         	-->
+          	<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      	</user-data-constraint> 
 	</security-constraint>
 
 	<login-config>

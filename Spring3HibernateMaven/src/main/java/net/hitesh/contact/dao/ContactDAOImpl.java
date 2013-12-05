@@ -5,6 +5,7 @@ import java.util.List;
 import net.hitesh.contact.form.Contact;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,13 @@ public class ContactDAOImpl implements ContactDAO {
 
 	public List<Contact> fetch(String name) {
 
-		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Contact.class);
+		/*Criteria cr = sessionFactory.getCurrentSession().createCriteria(Contact.class);
 		cr.add(Restrictions.ilike("firstname",name));
 
-		return cr.list();
+		return cr.list();*/
+		
+		Query query = sessionFactory.getCurrentSession().createQuery("from Contact AS c where c.firstname = :fname");
+		query.setParameter("fname", name);
+		return query.list();
 	}
 }
