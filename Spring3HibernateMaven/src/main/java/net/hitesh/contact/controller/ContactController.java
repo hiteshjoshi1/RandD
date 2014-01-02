@@ -18,6 +18,8 @@ public class ContactController {
 
 	@Autowired
 	private ContactService contactService;
+	
+	
 
 	@RequestMapping("/")
 	public String listContacts(Map<String, Object> map) {
