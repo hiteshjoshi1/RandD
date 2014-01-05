@@ -1,95 +1,133 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://www.springframework.org/schema/beans"
-        xmlns:p="http://cxf.apache.org/policy" 
-        xsi:schemaLocation="
+	xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://cxf.apache.org/policy"
+	xmlns:wsp="http://www.w3.org/ns/ws-policy"
+		xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+		xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"	
+		xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.w3.org/ns/ws-policy http://www.w3.org/2007/02/ws-policy.xsd 
     http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd">
 
-        <wsp:Policy wsu:Id="SecurityPolicyContactDemo" 
-                xmlns:wsp="http://www.w3.org/ns/ws-policy"
-                xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
-                xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
-                <wsp:ExactlyOne>
-                        <wsp:All>
-                           <sp:AsymmetricBinding>
-       						<wsp:Policy>
-     							<sp:InitiatorToken>
-    							    <wsp:Policy>
-    							        <sp:X509Token sp:IncludeToken=
-    										            "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
- 								       					      <wsp:Policy>
-       						     							      <sp:WssX509V3Token10 />
-     						     							    </wsp:Policy>
-	  									</sp:X509Token>
-            						</wsp:Policy>
-         						 </sp:InitiatorToken>
-         						 
-         <sp:RecipientToken>
-            <wsp:Policy>
-              <sp:X509Token sp:IncludeToken=
-                "http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never">
-                <!-- IncludeToken/Once    And  IncludeToken/AlwaysToRecipient  Can also be used -->
-                <wsp:Policy>
-                  <sp:WssX509V3Token10 />
-                </wsp:Policy>
-              </sp:X509Token>
-            </wsp:Policy>
-          </sp:RecipientToken>
-                    
-                    
-          <sp:AlgorithmSuite>
-            <wsp:Policy>
-              <sp:Basic128Rsa15 />
-            </wsp:Policy>
-          </sp:AlgorithmSuite>
-          
-          
-          <sp:Layout>
-           	 <wsp:Policy>
-          		    <sp:Strict />
-           		 </wsp:Policy>
-          </sp:Layout>
-          
-          
-          <sp:IncludeTimestamp />
-          
-          <sp:ProtectTokens />
-          <sp:OnlySignEntireHeadersAndBody />
-	        
-	        </wsp:Policy>
-	      </sp:AsymmetricBinding>
-      
-        <sp:SignedParts>
-      	  	 <sp:Body />
-        	 <sp:Header Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/> 
-      </sp:SignedParts>
-      
-      <sp:EncryptedParts>
-       	 <sp:Body />
-      </sp:EncryptedParts>
-      
-      
-      <sp:Wss10>
-        <wsp:Policy>
-          <sp:MustSupportRefKeyIdentifier />
-        </wsp:Policy>
-      </sp:Wss10>
-              
+	<wsp:Policy wsu:Id="SecurityPolicyContactDemo">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<wsam:Addressing wsp:Optional="false" />
+				<!--wsp:Policy/> </wsam:Addressing -->
+				<sp:AsymmetricBinding>
+					<wsp:Policy>
+						<sp:InitiatorToken>
+							<wsp:Policy>
+								<sp:X509Token
+									sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+									<wsp:Policy>
+										<sp:WssX509V3Token10 />
+									</wsp:Policy>
+								</sp:X509Token>
+							</wsp:Policy>
+						</sp:InitiatorToken>
+						<sp:RecipientToken>
+							<wsp:Policy>
+								<sp:X509Token
+									sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/Never">
+									<wsp:Policy>
+										<sp:WssX509V3Token10 />
+										<sp:RequireIssuerSerialReference />
+									</wsp:Policy>
+								</sp:X509Token>
+							</wsp:Policy>
+						</sp:RecipientToken>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict />
+							</wsp:Policy>
+						</sp:Layout>
+						<sp:IncludeTimestamp />
+						<sp:OnlySignEntireHeadersAndBody />
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic128 />
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:EncryptSignature />
+					</wsp:Policy>
+				</sp:AsymmetricBinding>
+				<sp:Wss10>
+					<wsp:Policy>
+						<sp:MustSupportRefIssuerSerial />
+					</wsp:Policy>
+				</sp:Wss10>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
 
-                                <sp:SupportingTokens>
-                                        <wsp:Policy>
-                                           <sp:UsernameToken   sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
-                                                        <wsp:Policy>
-                                                                <sp:WssUsernameToken11 />
-                                                                  	<sp:HashPassword />                      
-    																<sp:Nonce />    	
-                                                        </wsp:Policy>
-                                                </sp:UsernameToken>
-                                        </wsp:Policy>
-                                </sp:SupportingTokens> 
-                        </wsp:All>
-                </wsp:ExactlyOne>
-        </wsp:Policy>
+<wsp:Policy wsu:Id="SecurityPolicyContactDemo_Input_Policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<sp:EncryptedParts>
+<sp:Body/>
+</sp:EncryptedParts>
+<sp:SignedParts>
+<sp:Body/>
+<sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="AckRequested" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="SequenceAcknowledgement" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="Sequence" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="CreateSequence" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+</sp:SignedParts>
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+<wsp:Policy wsu:Id="SecurityPolicyContactDemo_Output_Policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<sp:EncryptedParts>
+<sp:Body/>
+</sp:EncryptedParts>
+<sp:SignedParts>
+<sp:Body/>
+<sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing"/>
+<sp:Header Name="AckRequested" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="SequenceAcknowledgement" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="Sequence" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+<sp:Header Name="CreateSequence" Namespace="http://docs.oasis-open.org/ws-rx/wsrm/200702"/>
+</sp:SignedParts>
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+
+
+	
+	<wsp:Policy>
+	<sp:Wss10>
+		<wsp:Policy>
+			<sp:MustSupportRefKeyIdentifier />
+		</wsp:Policy>
+	</sp:Wss10> 
+	<sp:SupportingTokens>
+		<wsp:Policy>
+			<sp:UsernameToken
+				sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+				<wsp:Policy>
+					<sp:WssUsernameToken11 />
+					<sp:HashPassword />
+					<sp:Nonce />
+				</wsp:Policy>
+			</sp:UsernameToken>
+		</wsp:Policy>
+	</sp:SupportingTokens>
+	</wsp:Policy>
 </beans>

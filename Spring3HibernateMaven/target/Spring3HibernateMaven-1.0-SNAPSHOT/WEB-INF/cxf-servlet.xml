@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:jaxws="http://cxf.apache.org/jaxws"
-	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://cxf.apache.org/policy"
-	xmlns:cxf="http://cxf.apache.org/core"
-	
-	
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://cxf.apache.org/policy" xmlns:cxf="http://cxf.apache.org/core"
+
+
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -16,81 +13,102 @@ http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
 http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />  
-	<import resource="classpath:META-INF/cxf/cxf-extension-policy.xml"/>   
- 
- <cxf:bus>
-        <cxf:features>
-            <p:policies/>
-          </cxf:features>
-    </cxf:bus>
- 
-   
-    <jaxws:endpoint
-            id="contactServiceEndPoint"
-            implementor="#contactSEIImpl"
-            address="/Contact">
-            
-<!--      <jaxws:properties> 
-        <entry key="ws-security.callback-handler">
-                <ref bean="serverCallback"/>
-            </entry>  
-     
-              		 <entry key="mtom-enabled" value="true"/>
-              		   <entry key="ws-security.encryption.properties" value="serviceKeystore.properties"/>
-         			   <entry key="ws-security.signature.properties" value="serviceKeystore.properties"/>
-           				 <entry key="ws-security.encryption.username" value="myclientkey"/>
-           				  
-     </jaxws:properties>   -->
-                 <!-- Of special note is the useReqSigCert value for the encryptionUser parameter in the WSS4JOutInterceptor above. 
-            When this value is used instead of a specific client key alias, it tells the service to use the same key that was used to sign the SOAP request.
-             This allows the service to handle any client whose public key is in the service's truststore. -->
-     
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-policy.xml" />
 
-              <jaxws:inInterceptors> 
-                    <bean id="wSS4JInInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor"> 
- 						<constructor-arg> 
- 						<map> 
- 						<entry  key="passwordCallbackRef"> 
-  									<ref  bean="serverCallback" /> 
-   							</entry>   							
- 						<entry key="passwordType"  value="PasswordText" /> 	
- 						<entry key="user" value="wsuser" /> 
- 						<entry key="action" value="UsernameToken Timestamp Signature Encrypt"/>  							
-	 						 <entry key="encryptionUser" value="myservicekey"/>						
-	 						<entry key="decryptionPropFile" value="classpath:serviceKeystore.properties"/>
-         			   		<entry key="signaturePropFile" value="classpath:serviceKeystore.properties"/>      					
- 							<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
- 							<entry key="encryptionKeyIdentifier" value="DirectReference" />
- 							<!-- <entry key="encryptionParts"
-					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
-					<entry key="signatureParts"
-					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
-					<entry key="signatureKeyIdentifier" value="DirectReference" /> -->
- 							  				 <!--   <entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-   							           				   -->
-   								
-       					</map>
-      					</constructor-arg> 
-					</bean>
-                   </jaxws:inInterceptors>   
-                 </jaxws:endpoint>    
+	<cxf:bus>
+		<cxf:features>
+			<p:policies />
+		</cxf:features>
+	</cxf:bus>
+
+
+	<jaxws:endpoint id="contactServiceEndPoint" implementor="#contactSEIImpl"
+		address="/Contact">
+
+<!-- 		<jaxws:properties>
+			<entry key="ws-security.callback-handler">
+				<ref bean="serverCallback" />
+			</entry>
+			<entry key="mtom-enabled" value="true"/>
+			<entry key="ws-security.username" value="wsuser" />
+			<entry key="ws-security.signature.properties" value="classpath:serviceKeystore.properties" />
+			<entry key="ws-security.encryption.properties" value="classpath:serviceKeystore.properties" />
+			<entry key="ws-security.encryption.username" value="myservicekey"/>
+			<entry key="ws-security.signature.username" value="myclientkey"/>
+
+		</jaxws:properties> -->
 
 
 
+		<!-- The Below CXF In Interceptor is working, trying with Policy Based 
+			configuration so commented -->
+
+		 <jaxws:inInterceptors> 
+		 <bean id="wSS4JInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor"> 
+			<constructor-arg>
+			 <map>
+			  <entry key="passwordCallbackRef"> <ref bean="serverCallback"/>
+			   </entry>
+			    <entry key="passwordType" value="PasswordText" /> <entry key="user" value="wsuser" /> 
+			<entry key="action" value="UsernameToken Timestamp Signature Encrypt"/>
+			 <entry key="encryptionUser" value="myservicekey"/>
+			  <entry key="decryptionPropFile" 
+			value="classpath:serviceKeystore.properties"/>
+			<entry key="signaturePropFile" 
+			value="classpath:serviceKeystore.properties"/> 
+			<entry key="encryptionKeyTransportAlgorithm" 
+			value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+			 <entry key="encryptionKeyIdentifier" 
+			value="DirectReference" /> 
+			<entry key="encryptionParts" value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" 
+			/> 
+			<entry key="signatureParts" value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" 
+			/>
+			 <entry key="signatureKeyIdentifier" value="DirectReference" /> <entry 
+			key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/> 
+			</map> </constructor-arg> 
+			</bean>
+			 </jaxws:inInterceptors> 
+			
+			 <jaxws:outInterceptors>        
+			  <bean  id="wSS4JOutInterceptor"  class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor" >
+			          <constructor-arg>
+			            <map>
+			              <entry key="action" value="Timestamp Signature Encrypt"/>  
+			                            <entry key="user" value="myservicekey"/>     
+			                            <entry key="signaturePropFile" value="serviceKeystore.properties"/>  
+			                            <entry key="encryptionPropFile" value="serviceKeystore.properties"/>  
+			                            <entry key="encryptionUser" value="useReqSigCert"/>     
+			                    		<entry key="passwordCallbackRef"> <ref bean="serverCallback"/>
+			 							  </entry> 
+			                            <entry key="signatureParts" value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+			                            <entry key="encryptionParts" value="{Element}{http://www.w3.org/2000/09/xmldsig#}Signature;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+			                            <entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+			                            <entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+			                            <entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/> 
+			                             </map>
+			                             </constructor-arg> 
+			                      </bean>   
+			   </jaxws:outInterceptors> 		 
+			 
+	</jaxws:endpoint>
 
 
 
 
 
-         
- <jaxrs:server id="contactRestSEI" address="/rest">
-        <jaxrs:serviceBeans>
-        <ref bean="contactRestSEIImpl" />
-        </jaxrs:serviceBeans>
-    </jaxrs:server>
-    
-    <!-- <bean id ="contactRest" class="net.hitesh.webservice.REST.service.impl.ContactRestSEIImpl"/> -->
-     
+
+
+
+
+	<jaxrs:server id="contactRestSEI" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref bean="contactRestSEIImpl" />
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+
+	<!-- <bean id ="contactRest" class="net.hitesh.webservice.REST.service.impl.ContactRestSEIImpl"/> -->
+
 </beans>
     

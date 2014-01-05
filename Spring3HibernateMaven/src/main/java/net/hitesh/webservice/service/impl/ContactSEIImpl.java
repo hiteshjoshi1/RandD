@@ -15,7 +15,7 @@ import net.hitesh.webservice.processor.ContactProcessor;
 import net.hitesh.webservice.service.ContactSEI;
 
 
-@Policies({@Policy(uri = "MySecurityPolicy.xml")}) 
+//@Policies({@Policy(uri = "MySecurityPolicy.xml")}) 
 @Transactional
 @WebService(endpointInterface="net.hitesh.webservice.service.ContactSEI",
 targetNamespace="http://hitesh.net/webservice/service",
