@@ -1,0 +1,75 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+	<transport name="http"
+		pivot="java:org.apache.axis.transport.http.HTTPSender" />
+	<globalConfiguration>
+		<requestFlow>
+			<handler type="java:org.apache.ws.axis.security.WSDoAllSender">
+				<parameter name="passwordCallbackClass"
+					value="net.hitesh.webservice.service.PWCallBackClient" />
+				<parameter name="passwordType" value="PasswordText" />
+				<parameter name="user" value="wsuser" />
+				<parameter name="action"
+					value="UsernameToken Timestamp Signature Encrypt" />
+				<parameter name="encryptionKeyIdentifier" value="DirectReference" />
+				<parameter name="encryptionPropFile" value="clientKeystore.properties" />
+				<parameter name="encryptionUser" value="myservicekey" />				
+				<parameter name="signatureUser" value="myclientkey" />
+				<parameter name="signaturePropFile" value="clientKeystore.properties" />
+				<parameter name="signatureKeyIdentifier" value="DirectReference" />
+		
+				<parameter name="encryptionKeyTransportAlgorithm"
+					value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<parameter name="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<parameter name="encryptionParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+		 <parameter name="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/> 
+					<parameter name="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/> 
+			</handler>
+		</requestFlow>
+		
+		
+		<!--bean 
+class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor"
+id="TimestampSignEncrypt_Response">
+<constructor-arg>
+<map>
+<entry key="action" value="Timestamp Signature Encrypt"/>
+<entry key="signaturePropFile" value="clientKeystore.properties"/>
+<entry key="decryptionPropFile" value="clientKeystore.properties"/>
+<entry key="passwordCallbackClass" value="client.ClientKeystorePasswordCallback"/>
+<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+</map>
+</constructor-arg>
+</bean-->
+		<responseFlow>
+			<handler type="java:org.apache.ws.axis.security.WSDoAllReceiver">
+				<parameter name="passwordCallbackClass"
+					value="net.hitesh.webservice.service.PWCallBackClient" />
+				<parameter name="passwordType" value="PasswordText" />
+				<parameter name="user" value="wsuser" />
+				<!-- Order of Signing , encryption and timestamp matters -->
+				<parameter name="action" value="Timestamp Signature Encrypt" />
+				<parameter name="encryptionKeyIdentifier" value="DirectReference" />
+				<parameter name="decryptionPropFile" value="clientKeystore.properties" />
+				<parameter name="encryptionUser" value="myservicekey" />				
+				<parameter name="signatureUser" value="myclientkey" />
+				<parameter name="signaturePropFile" value="clientKeystore.properties" />
+				<parameter name="signatureKeyIdentifier" value="DirectReference" />
+		   		<parameter name="enableSignatureConfirmation"  value="false" />
+				<parameter name="encryptionKeyTransportAlgorithm"
+					value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<parameter name="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<parameter name="encryptionParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+		 <parameter name="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/> 
+					<parameter name="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/> 
+			</handler>
+		</responseFlow>
+		
+		
+	</globalConfiguration>
+</deployment>
